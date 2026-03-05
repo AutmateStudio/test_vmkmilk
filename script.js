@@ -24,11 +24,17 @@ const products = [
 const state = {
   products,
   cart: { items: loadCart() },
+  delivery: {
+    selectedDate: '',
+    addresses: loadAddresses(),
+    selectedAddress: ''
+  },
   history: [],
   ui: {
     searchQuery: '',
-    selectedCategory: 'Все',
+    selectedCategories: [...new Set(products.map((item) => item.category))],
     sortBy: 'popular',
+    gridColumns: '2',
     cartOpen: false,
     quickViewOpen: false,
     quickViewProductId: null,
@@ -54,12 +60,18 @@ const els = {
   cartTotalPrice: document.getElementById('cartTotalPrice'),
   checkoutBtn: document.getElementById('checkoutBtn'),
   menuDialog: document.getElementById('menuDialog'),
-  menuCategories: document.getElementById('menuCategories'),
   filtersDialog: document.getElementById('filtersDialog'),
+  categoryFilters: document.getElementById('categoryFilters'),
   quickViewDialog: document.getElementById('quickViewDialog'),
   quickViewBody: document.getElementById('quickViewBody'),
   historyList: document.getElementById('historyList'),
   dateChips: document.getElementById('dateChips'),
+  addressSelect: document.getElementById('addressSelect'),
+  addressDialog: document.getElementById('addressDialog'),
+  addressInput: document.getElementById('addressInput'),
+  saveAddressBtn: document.getElementById('saveAddressBtn'),
+  cancelAddressBtn: document.getElementById('cancelAddressBtn'),
+  gridToggle: document.querySelector('.grid-view-toggle'),
   checkoutDialog: document.getElementById('checkoutDialog'),
   closeDialog: document.getElementById('closeDialog')
 };
@@ -97,6 +109,21 @@ function saveCart() {
   localStorage.setItem('vmkmilk-cart-v2', JSON.stringify(state.cart.items));
 }
 
+function loadAddresses() {
+  try {
+    const raw = localStorage.getItem('vmkmilk-addresses-v1');
+    if (!raw) return ['Вологда, ул. Ленина, 10'];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) && parsed.length ? parsed : ['Вологда, ул. Ленина, 10'];
+  } catch {
+    return ['Вологда, ул. Ленина, 10'];
+  }
+}
+
+function saveAddresses() {
+  localStorage.setItem('vmkmilk-addresses-v1', JSON.stringify(state.delivery.addresses));
+}
+
 function normalize(value) {
   return value.toLowerCase().trim();
 }
@@ -124,7 +151,7 @@ function cartTotals() {
 function getVisibleProducts() {
   const q = normalize(state.ui.searchQuery);
   const filtered = state.products.filter((item) => {
-    const categoryOk = state.ui.selectedCategory === 'Все' || item.category === state.ui.selectedCategory;
+    const categoryOk = state.ui.selectedCategories.includes(item.category);
     const queryText = normalize(`${item.name} ${item.brand} ${item.category} ${item.desc}`);
     return categoryOk && (!q || queryText.includes(q));
   });
@@ -140,6 +167,7 @@ function stepperMarkup(id, qty) {
 }
 
 function renderProducts() {
+  els.productGrid.dataset.columns = state.ui.gridColumns;
   const items = getVisibleProducts();
   els.resultCounter.textContent = items.length
     ? `Найдено товаров: ${items.length}`
@@ -164,17 +192,29 @@ function renderProducts() {
   }).join('');
 }
 
-function renderMenuCategories() {
-  const categories = ['Все', ...new Set(state.products.map((item) => item.category))];
-  els.menuCategories.innerHTML = categories.map((category) => `
-    <button type="button" data-category="${category}" class="${state.ui.selectedCategory === category ? 'active' : ''}">${category}</button>
-  `).join('');
-}
-
 function renderFiltersRadios() {
   const active = state.ui.sortBy;
   els.filtersDialog.querySelectorAll('input[name="sort"]').forEach((radio) => {
     radio.checked = radio.value === active;
+  });
+}
+
+function renderCategoryFilters() {
+  const categories = [...new Set(state.products.map((item) => item.category))];
+  els.categoryFilters.innerHTML = categories.map((category) => `
+    <label><input type="checkbox" data-filter-category="${category}" ${state.ui.selectedCategories.includes(category) ? 'checked' : ''}/> ${category}</label>
+  `).join('');
+}
+
+function renderAddresses() {
+  const selected = state.delivery.selectedAddress || state.delivery.addresses[0];
+  state.delivery.selectedAddress = selected;
+  els.addressSelect.innerHTML = `${state.delivery.addresses.map((address) => `<option value="${address}" ${address === selected ? 'selected' : ''}>${address}</option>`).join('')}<option value="__add_new__">+ Добавить адрес</option>`;
+}
+
+function renderDateSelection() {
+  els.dateChips.querySelectorAll('button[data-date]').forEach((button) => {
+    button.classList.toggle('active', button.dataset.date === state.delivery.selectedDate);
   });
 }
 
@@ -229,7 +269,9 @@ function renderQuickView() {
     <strong class="price">${formatPrice(product.price)}</strong>
     <div class="quick-view__meta">${product.specs.map((spec) => `<span>${spec}</span>`).join('')}</div>
     <p>${product.desc}</p>
-    <details><summary>Подробнее</summary><p>${product.brand} • Категория: ${product.category}. Демо-описание товара для быстрого просмотра.</p></details>
+    <p><strong>Бренд:</strong> ${product.brand}</p>
+    <p><strong>Категория:</strong> ${product.category}</p>
+    <p>Демо-описание товара для быстрого просмотра.</p>
     <div class="cart-line">
       ${qty > 0 ? stepperMarkup(product.id, qty) : `<button type="button" class="add-btn" data-add="${product.id}">Добавить</button>`}
       <button type="button" class="secondary" data-open-cart>Открыть корзину</button>
@@ -317,7 +359,9 @@ function closeOverlay(id, fromPop = false) {
 
 function seedDates() {
   const dates = ['Пн, 11 мар', 'Ср, 13 мар', 'Сб, 16 мар', 'Пн, 18 мар', 'Ср, 20 мар', 'Сб, 23 мар'];
-  els.dateChips.innerHTML = dates.map((date) => `<span>${date}</span>`).join('');
+  if (!state.delivery.selectedDate) state.delivery.selectedDate = dates[0];
+  els.dateChips.innerHTML = dates.map((date) => `<button type="button" data-date="${date}">${date}</button>`).join('');
+  renderDateSelection();
 }
 
 function handleSmartHeader() {
@@ -346,19 +390,65 @@ els.menuBtn.addEventListener('click', (event) => openOverlay('menu', event.curre
 els.filtersBtn.addEventListener('click', (event) => openOverlay('filters', event.currentTarget));
 els.cartFab.addEventListener('click', (event) => openOverlay('cart', event.currentTarget));
 
-els.menuCategories.addEventListener('click', (event) => {
-  const btn = event.target.closest('[data-category]');
+els.menuDialog.addEventListener('click', (event) => {
+  const btn = event.target.closest('[data-menu-open]');
   if (!btn) return;
-  state.ui.selectedCategory = btn.dataset.category;
-  renderMenuCategories();
-  renderProducts();
+  closeOverlay('menu');
+  openOverlay(btn.dataset.menuOpen, els.menuBtn);
 });
 
 els.filtersDialog.addEventListener('change', (event) => {
   const radio = event.target.closest('input[name="sort"]');
-  if (!radio) return;
-  state.ui.sortBy = radio.value;
+  const checkbox = event.target.closest('input[data-filter-category]');
+  if (radio) state.ui.sortBy = radio.value;
+  if (checkbox) {
+    const next = els.filtersDialog.querySelectorAll('input[data-filter-category]:checked');
+    if (!next.length) {
+      checkbox.checked = true;
+      return;
+    }
+    state.ui.selectedCategories = [...next].map((item) => item.dataset.filterCategory);
+  }
   renderProducts();
+});
+
+els.gridToggle.addEventListener('click', (event) => {
+  const btn = event.target.closest('[data-grid]');
+  if (!btn) return;
+  state.ui.gridColumns = btn.dataset.grid;
+  els.gridToggle.querySelectorAll('button').forEach((button) => button.classList.toggle('active', button === btn));
+  renderProducts();
+});
+
+els.dateChips.addEventListener('click', (event) => {
+  const btn = event.target.closest('[data-date]');
+  if (!btn) return;
+  state.delivery.selectedDate = btn.dataset.date;
+  renderDateSelection();
+});
+
+els.addressSelect.addEventListener('change', () => {
+  if (els.addressSelect.value === '__add_new__') {
+    els.addressInput.value = '';
+    els.addressDialog.showModal();
+    return;
+  }
+  state.delivery.selectedAddress = els.addressSelect.value;
+});
+
+els.saveAddressBtn.addEventListener('click', () => {
+  const value = els.addressInput.value.trim();
+  if (!value) return;
+  if (!state.delivery.addresses.includes(value)) state.delivery.addresses.push(value);
+  state.delivery.selectedAddress = value;
+  saveAddresses();
+  renderAddresses();
+  els.addressDialog.close();
+});
+
+els.cancelAddressBtn.addEventListener('click', () => {
+  els.addressDialog.close();
+  renderAddresses();
 });
 
 els.productGrid.addEventListener('click', (event) => {
@@ -416,9 +506,14 @@ document.addEventListener('click', (event) => {
   closeOverlay(map[closeBtn.dataset.close]);
 });
 
-[els.cartDialog, els.quickViewDialog, els.menuDialog, els.filtersDialog].forEach((dialog) => {
+[els.cartDialog, els.quickViewDialog, els.menuDialog, els.filtersDialog, els.addressDialog].forEach((dialog) => {
   dialog.addEventListener('cancel', (event) => {
     event.preventDefault();
+    if (dialog === els.addressDialog) {
+      dialog.close();
+      renderAddresses();
+      return;
+    }
     const id =
       dialog === els.cartDialog ? 'cart' :
       dialog === els.quickViewDialog ? 'quick' :
@@ -435,7 +530,7 @@ window.addEventListener('popstate', () => {
 
 els.checkoutBtn.addEventListener('click', () => {
   const { totalQty, totalSum } = cartTotals();
-  if (!totalQty) return;
+  if (!totalQty || !state.delivery.selectedDate || !state.delivery.selectedAddress) return;
 
   state.history.unshift({ id: 1000 + state.history.length + 1, items: totalQty, total: totalSum });
   state.cart.items = {};
@@ -449,8 +544,9 @@ els.checkoutBtn.addEventListener('click', () => {
 els.closeDialog.addEventListener('click', () => els.checkoutDialog.close());
 
 seedDates();
-renderMenuCategories();
 renderFiltersRadios();
+renderCategoryFilters();
+renderAddresses();
 renderProducts();
 renderCart();
 renderHistory();

@@ -15,7 +15,7 @@
   <body>
     <header id="smartHeader" class="smart-header">
       <div class="header-inner">
-        <button id="menuBtn" class="icon-btn" type="button" aria-label="Открыть меню категорий">
+        <button id="menuBtn" class="icon-btn" type="button" aria-label="Открыть меню сайта">
           ☰ <span>Меню</span>
         </button>
 
@@ -50,10 +50,14 @@
       <form method="dialog" class="sheet__scrim-close"><button aria-label="Закрыть меню"></button></form>
       <div class="sheet__content" role="dialog" aria-modal="true" aria-labelledby="menuTitle">
         <div class="sheet__header">
-          <h2 id="menuTitle">Меню категорий</h2>
+          <h2 id="menuTitle">Меню сайта</h2>
           <button type="button" class="icon-close" data-close="menu">✕</button>
         </div>
-        <div id="menuCategories" class="menu-list"></div>
+        <nav class="menu-list">
+          <button type="button" data-menu-open="cart">Корзина</button>
+          <a href="#" class="menu-link">О компании</a>
+          <a href="tel:+78001234567" class="menu-link">+7 (800) 123-45-67</a>
+        </nav>
       </div>
     </dialog>
 
@@ -71,6 +75,11 @@
           <label><input type="radio" name="sort" value="nameDesc" /> Название (Я-А)</label>
           <label><input type="radio" name="sort" value="priceAsc" /> Сначала дешевле</label>
           <label><input type="radio" name="sort" value="priceDesc" /> Сначала дороже</label>
+        </fieldset>
+
+        <fieldset class="filter-group">
+          <legend>Категории</legend>
+          <div id="categoryFilters" class="category-filters"></div>
         </fieldset>
       </div>
     </dialog>
@@ -91,12 +100,23 @@
           <div><span>Сумма:</span><strong id="cartTotalPrice">0 ₽</strong></div>
         </div>
 
+        <div class="cart-field">
+          <label for="addressSelect">Адрес доставки</label>
+          <select id="addressSelect" class="address-select"></select>
+        </div>
+
         <button id="checkoutBtn" type="button">Оформить демо-заказ</button>
 
-        <details class="demo-accordion">
-          <summary>Ближайшие даты доставки</summary>
+        <div class="delivery-dates">
+          <h3>Ближайшие даты доставки</h3>
+          <p class="inline-note">Выберите одну дату — это обязательный шаг.</p>
           <div id="dateChips" class="date-chips"></div>
-        </details>
+        </div>
+
+        <div class="grid-view-toggle" role="group" aria-label="Вид карточек">
+          <button type="button" class="active" data-grid="2">2 в ряд</button>
+          <button type="button" data-grid="1">1 в ряд</button>
+        </div>
 
         <details class="demo-accordion">
           <summary>История покупок (демо)</summary>
@@ -117,6 +137,18 @@
         <h2 id="checkoutTitle">Заказ оформлен (демо)</h2>
         <p>Это визуальная симуляция оформления без бэкенда и оплаты.</p>
         <button id="closeDialog" type="button" class="secondary">Понятно</button>
+      </div>
+    </dialog>
+
+    <dialog id="addressDialog" class="sheet sheet--small" aria-labelledby="addressTitle">
+      <div class="sheet__content">
+        <h2 id="addressTitle">Добавить адрес</h2>
+        <label class="address-form-field" for="addressInput">Введите адрес доставки</label>
+        <input id="addressInput" type="text" placeholder="Город, улица, дом, квартира" />
+        <div class="address-actions">
+          <button id="saveAddressBtn" type="button">Сохранить адрес</button>
+          <button id="cancelAddressBtn" type="button" class="secondary">Отмена</button>
+        </div>
       </div>
     </dialog>
   </body>
