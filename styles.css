@@ -387,6 +387,7 @@ button, input { font: inherit; }
 .icon-btn--small { min-width: 42px; padding: 0.4rem; }
 
 .filter-group { border: 0; padding: 0; margin: 0; display: grid; gap: 0.5rem; }
+.filter-group + .filter-group { margin-top: 0.65rem; }
 .filter-group label { display: flex; gap: 0.5rem; align-items: center; }
 
 .quick-view { display: grid; gap: 0.8rem; }
