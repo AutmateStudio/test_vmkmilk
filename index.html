@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Демо интернет-магазина VMKMilk: каталог, поиск, сортировка, визуальная корзина и история без серверной логики."
+    />
+    <title>VMKMilk — демо-магазин</title>
+    <link rel="preconnect" href="https://vmkmilk.ru" crossorigin />
+    <link rel="stylesheet" href="./styles.css" />
+    <script defer src="./script.js"></script>
+  </head>
+  <body>
+    <div class="bg-glow bg-glow--left" aria-hidden="true"></div>
+    <div class="bg-glow bg-glow--right" aria-hidden="true"></div>
+
+    <header class="container hero">
+      <div>
+        <p class="kicker">Демо без бэкенда и регистрации</p>
+        <h1>Красивый и быстрый каркас интернет-магазина VMKMilk</h1>
+        <p class="hero-text">
+          Главная страница с каталогом, поиском, сортировкой, корзиной и демо-оформлением.
+          Всё работает визуально на клиенте и готово к деплою на GitHub Pages.
+        </p>
+        <div class="hero-badges">
+          <span>⚡ Быстрый static-first</span>
+          <span>📱 Адаптивный UI</span>
+          <span>🛒 Интерактивная корзина</span>
+        </div>
+      </div>
+      <div class="hero-card">
+        <h2>Демо-режим</h2>
+        <p>Открывается сразу. Можно искать товары, сортировать и собирать корзину.</p>
+        <div class="hero-metrics">
+          <div><strong id="metricProducts">20</strong><span>товаров</span></div>
+          <div><strong>4</strong><span>категории</span></div>
+          <div><strong>0₽</strong><span>доставка в демо</span></div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container layout">
+      <section>
+        <div class="toolbar">
+          <label class="search-wrap" for="searchInput">
+            <span aria-hidden="true">🔎</span>
+            <input id="searchInput" type="search" placeholder="Поиск по названию, бренду, описанию..." autocomplete="off" />
+          </label>
+
+          <div class="toolbar-row">
+            <div id="chips" class="chips" role="tablist" aria-label="Фильтр по категориям"></div>
+            <label class="sort-wrap" for="sortSelect">
+              <span>Сортировка:</span>
+              <select id="sortSelect">
+                <option value="popular">Сначала популярные</option>
+                <option value="nameAsc">По названию (А-Я)</option>
+                <option value="nameDesc">По названию (Я-А)</option>
+                <option value="priceAsc">Сначала дешевле</option>
+                <option value="priceDesc">Сначала дороже</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div id="resultCounter" class="result-counter"></div>
+        <section id="productGrid" class="product-grid" aria-live="polite"></section>
+      </section>
+
+      <aside class="right-panel">
+        <section class="panel-block cart-panel">
+          <div class="panel-title-row">
+            <h3>Корзина</h3>
+            <span class="cart-count" id="cartCount">0</span>
+          </div>
+          <div id="cartEmpty" class="empty-state">Добавьте товары из каталога ✨</div>
+          <ul id="cartItems" class="cart-items"></ul>
+          <div class="cart-summary">
+            <div><span>Товаров:</span><strong id="cartTotalItems">0</strong></div>
+            <div><span>Сумма:</span><strong id="cartTotalPrice">0 ₽</strong></div>
+          </div>
+          <button id="checkoutBtn" type="button">Оформить демо-заказ</button>
+        </section>
+
+        <section class="panel-block">
+          <h3>Ближайшие даты доставки</h3>
+          <div class="date-chips" id="dateChips"></div>
+          <p class="hint">В демо это визуальный календарь без серверной проверки.</p>
+        </section>
+
+        <section class="panel-block">
+          <h3>История покупок (демо)</h3>
+          <ul id="historyList" class="history-list">
+            <li class="empty-history">Пока нет демо-заказов</li>
+          </ul>
+        </section>
+      </aside>
+    </main>
+
+    <dialog id="checkoutDialog" class="checkout-dialog">
+      <h3>Заказ оформлен (демо)</h3>
+      <p>
+        Отлично! Это только визуальная симуляция. На полноценном проекте здесь будет реальная
+        отправка в backend и синхронизация с 1С.
+      </p>
+      <button id="closeDialog" type="button" class="secondary">Понятно</button>
+    </dialog>
+
+    <footer class="container footer">
+      <p>
+        Источник карточек: каталог VMKMilk. Проект оптимизирован для размещения на GitHub Pages.
+      </p>
+    </footer>
+  </body>
+</html>
