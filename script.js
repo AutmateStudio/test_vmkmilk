@@ -35,7 +35,7 @@ const state = {
     searchQuery: '',
     selectedCategories: [...new Set(products.map((item) => item.category))],
     sortBy: 'popular',
-    gridColumns: '2',
+    gridColumns: window.matchMedia('(min-width: 861px)').matches ? '4' : '2',
     cartOpen: false,
     quickViewOpen: false,
     quickViewProductId: null,
@@ -91,6 +91,18 @@ const debounce = (fn, ms = 200) => {
     t = setTimeout(() => fn(...args), ms);
   };
 };
+
+function getGridOptions() {
+  return window.matchMedia('(min-width: 861px)').matches ? ['4', '6', '8'] : ['2', '1'];
+}
+
+function syncGridColumns() {
+  const options = getGridOptions();
+  if (!options.includes(state.ui.gridColumns)) state.ui.gridColumns = options[0];
+  els.gridToggle.querySelectorAll('button').forEach((button) => {
+    button.classList.toggle('active', button.dataset.grid === state.ui.gridColumns);
+  });
+}
 
 const sorters = {
   popular: (items) => [...items],
@@ -454,8 +466,9 @@ els.filtersDialog.addEventListener('change', (event) => {
 els.gridToggle.addEventListener('click', (event) => {
   const btn = event.target.closest('[data-grid]');
   if (!btn) return;
+  if (!getGridOptions().includes(btn.dataset.grid)) return;
   state.ui.gridColumns = btn.dataset.grid;
-  els.gridToggle.querySelectorAll('button').forEach((button) => button.classList.toggle('active', button === btn));
+  syncGridColumns();
   renderProducts();
 });
 
@@ -608,6 +621,12 @@ document.addEventListener('click', (event) => {
   });
 });
 
+window.addEventListener('resize', debounce(() => {
+  const previous = state.ui.gridColumns;
+  syncGridColumns();
+  if (previous !== state.ui.gridColumns) renderProducts();
+}, 120));
+
 window.addEventListener('popstate', () => {
   const id = overlayStack.pop();
   if (!id) return;
@@ -636,6 +655,7 @@ els.checkoutBtn.addEventListener('click', () => {
 els.closeDialog.addEventListener('click', () => els.checkoutDialog.close());
 
 seedDates();
+syncGridColumns();
 renderFiltersRadios();
 renderCategoryFilters();
 renderAddresses();
