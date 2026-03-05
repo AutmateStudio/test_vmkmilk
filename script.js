@@ -1,68 +1,77 @@
 const products = [
-  { id: 1, name: 'Молоко пастеризованное «Вологжанка» 1,5%', brand: 'Вологжанка', category: 'Молоко', desc: 'Лёгкое питьевое молоко, 930 г.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Moloko15_1.jpg', price: 92 },
-  { id: 2, name: 'Молоко пастеризованное «Вологжанка» 2,5%', brand: 'Вологжанка', category: 'Молоко', desc: 'Классическая жирность, 930 г.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Moloko25_2.jpg', price: 96 },
-  { id: 3, name: 'Молоко пастеризованное «Вологжанка» 2,5% (п/п)', brand: 'Вологжанка', category: 'Молоко', desc: 'Упаковка пюр-пак.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Moloko25_3.jpg', price: 99 },
-  { id: 4, name: 'Молоко пастеризованное «Вологжанка» 2,5% (470 г)', brand: 'Вологжанка', category: 'Молоко', desc: 'Компактный формат 470 г.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/moloko_470_2_5.jpg', price: 67 },
-  { id: 5, name: 'Молоко пастеризованное «Вологжанка» 3,2%', brand: 'Вологжанка', category: 'Молоко', desc: 'Более насыщенный вкус.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Moloko32.jpg', price: 102 },
-  { id: 6, name: 'Молоко пастеризованное «Вологжанка» 3,2% (п/п)', brand: 'Вологжанка', category: 'Молоко', desc: 'Питьевое, 930 г.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Moloko32_1.jpg', price: 105 },
-  { id: 7, name: 'Молоко пастеризованное «Вологжанка» 3,2% бутылка', brand: 'Вологжанка', category: 'Молоко', desc: 'Формат ПЭТ-бутылка.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/milk32.jpg', price: 89 },
-  { id: 8, name: 'Молоко топлёное «Вологжанка»', brand: 'Вологжанка', category: 'Молоко', desc: 'Нежный карамельный вкус.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/moloko_topl.jpg', price: 109 },
-  { id: 9, name: 'Молоко ультрапастеризованное «Вологжанка» 2,5%', brand: 'Вологжанка', category: 'Молоко', desc: 'Длительный срок хранения.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Moloko25_4.jpg', price: 112 },
-  { id: 10, name: 'Молоко ультрапастеризованное «Вологжанка» 3,2%', brand: 'Вологжанка', category: 'Молоко', desc: 'Для кофе и каш.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Moloko32_3.jpg', price: 116 },
-  { id: 11, name: 'Молоко цельное «Вологжанка» 3,4–4,0%', brand: 'Вологжанка', category: 'Молоко', desc: 'Повышенная жирность.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Moloko45.jpg', price: 123 },
-  { id: 12, name: 'Сливки пастеризованные «Вологжанка» 10%', brand: 'Вологжанка', category: 'Сливки', desc: 'Нежные питьевые сливки.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Slivki05.jpg', price: 118 },
-  { id: 13, name: 'Сливки пастеризованные «Вологжанка» 18%', brand: 'Вологжанка', category: 'Сливки', desc: 'Более густая текстура.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Slivki.jpg', price: 134 },
-  { id: 14, name: 'Сметана «Вологжанка» 14%', brand: 'Вологжанка', category: 'Сметана', desc: 'Лёгкая сметана, 300 г.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Smetana14.jpg', price: 84 },
-  { id: 15, name: 'Сметана «Вологжанка» 18% (470 г)', brand: 'Вологжанка', category: 'Сметана', desc: 'Семейный формат.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/smetana_18_470.jpg', price: 122 },
-  { id: 16, name: 'Сметана «Вологжанка» 18% (300 г)', brand: 'Вологжанка', category: 'Сметана', desc: 'Классическая линейка.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Smetana2.jpg', price: 93 },
-  { id: 17, name: 'Сметана «Вологжанка» 22% (200 г)', brand: 'Вологжанка', category: 'Сметана', desc: 'Более плотная консистенция.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/smetana_22_200.jpg', price: 88 },
-  { id: 18, name: 'Сметана «Вологжанка» 22% (400 г)', brand: 'Вологжанка', category: 'Сметана', desc: 'Формат для семьи.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/smetana_22_400.jpg', price: 126 },
-  { id: 19, name: 'Масло сливочное Бутербродное', brand: 'Вологжанка', category: 'Масло', desc: 'Удобно для завтрака.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Maslo_Buterbrodnoe_160_resized.jpg', price: 155 },
-  { id: 20, name: 'Масло сливочное Вологодское', brand: 'Вологжанка', category: 'Масло', desc: 'Традиционный вкус.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Maslo_Vologodskoe_180_resized.jpg', price: 172 }
+  { id: 1, name: 'Молоко пастеризованное «Вологжанка» 1,5%', brand: 'Вологжанка', category: 'Молоко', desc: 'Лёгкое питьевое молоко, 930 г.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Moloko15_1.jpg', price: 92, specs: ['930 г', '1.5%', 'пастеризованное'] },
+  { id: 2, name: 'Молоко пастеризованное «Вологжанка» 2,5%', brand: 'Вологжанка', category: 'Молоко', desc: 'Классическая жирность, 930 г.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Moloko25_2.jpg', price: 96, specs: ['930 г', '2.5%', 'пастеризованное'] },
+  { id: 3, name: 'Молоко пастеризованное «Вологжанка» 2,5% (п/п)', brand: 'Вологжанка', category: 'Молоко', desc: 'Упаковка пюр-пак.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Moloko25_3.jpg', price: 99, specs: ['930 г', '2.5%', 'пюр-пак'] },
+  { id: 4, name: 'Молоко пастеризованное «Вологжанка» 2,5% (470 г)', brand: 'Вологжанка', category: 'Молоко', desc: 'Компактный формат 470 г.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/moloko_470_2_5.jpg', price: 67, specs: ['470 г', '2.5%', 'пастеризованное'] },
+  { id: 5, name: 'Молоко пастеризованное «Вологжанка» 3,2%', brand: 'Вологжанка', category: 'Молоко', desc: 'Более насыщенный вкус.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Moloko32.jpg', price: 102, specs: ['930 г', '3.2%', 'пастеризованное'] },
+  { id: 6, name: 'Молоко пастеризованное «Вологжанка» 3,2% (п/п)', brand: 'Вологжанка', category: 'Молоко', desc: 'Питьевое, 930 г.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Moloko32_1.jpg', price: 105, specs: ['930 г', '3.2%', 'пюр-пак'] },
+  { id: 7, name: 'Молоко пастеризованное «Вологжанка» 3,2% бутылка', brand: 'Вологжанка', category: 'Молоко', desc: 'Формат ПЭТ-бутылка.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/milk32.jpg', price: 89, specs: ['930 г', '3.2%', 'ПЭТ'] },
+  { id: 8, name: 'Молоко топлёное «Вологжанка»', brand: 'Вологжанка', category: 'Молоко', desc: 'Нежный карамельный вкус.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/moloko_topl.jpg', price: 109, specs: ['930 г', '3.2%', 'топлёное'] },
+  { id: 9, name: 'Молоко ультрапастеризованное «Вологжанка» 2,5%', brand: 'Вологжанка', category: 'Молоко', desc: 'Длительный срок хранения.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Moloko25_4.jpg', price: 112, specs: ['950 г', '2.5%', 'ультра'] },
+  { id: 10, name: 'Молоко ультрапастеризованное «Вологжанка» 3,2%', brand: 'Вологжанка', category: 'Молоко', desc: 'Для кофе и каш.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Moloko32_3.jpg', price: 116, specs: ['950 г', '3.2%', 'ультра'] },
+  { id: 11, name: 'Молоко цельное «Вологжанка» 3,4–4,0%', brand: 'Вологжанка', category: 'Молоко', desc: 'Повышенная жирность.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Moloko45.jpg', price: 123, specs: ['930 г', '3.4-4%', 'цельное'] },
+  { id: 12, name: 'Сливки пастеризованные «Вологжанка» 10%', brand: 'Вологжанка', category: 'Сливки', desc: 'Нежные питьевые сливки.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Slivki05.jpg', price: 118, specs: ['500 г', '10%', 'пастеризованные'] },
+  { id: 13, name: 'Сливки пастеризованные «Вологжанка» 18%', brand: 'Вологжанка', category: 'Сливки', desc: 'Более густая текстура.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Slivki.jpg', price: 134, specs: ['500 г', '18%', 'пастеризованные'] },
+  { id: 14, name: 'Сметана «Вологжанка» 14%', brand: 'Вологжанка', category: 'Сметана', desc: 'Лёгкая сметана, 300 г.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Smetana14.jpg', price: 84, specs: ['300 г', '14%', 'сметана'] },
+  { id: 15, name: 'Сметана «Вологжанка» 18% (470 г)', brand: 'Вологжанка', category: 'Сметана', desc: 'Семейный формат.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/smetana_18_470.jpg', price: 122, specs: ['470 г', '18%', 'сметана'] },
+  { id: 16, name: 'Сметана «Вологжанка» 18% (300 г)', brand: 'Вологжанка', category: 'Сметана', desc: 'Классическая линейка.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Smetana2.jpg', price: 93, specs: ['300 г', '18%', 'сметана'] },
+  { id: 17, name: 'Сметана «Вологжанка» 22% (200 г)', brand: 'Вологжанка', category: 'Сметана', desc: 'Более плотная консистенция.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/smetana_22_200.jpg', price: 88, specs: ['200 г', '22%', 'сметана'] },
+  { id: 18, name: 'Сметана «Вологжанка» 22% (400 г)', brand: 'Вологжанка', category: 'Сметана', desc: 'Формат для семьи.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/smetana_22_400.jpg', price: 126, specs: ['400 г', '22%', 'сметана'] },
+  { id: 19, name: 'Масло сливочное Бутербродное', brand: 'Вологжанка', category: 'Масло', desc: 'Удобно для завтрака.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Maslo_Buterbrodnoe_160_resized.jpg', price: 155, specs: ['160 г', 'бутербродное', 'сливочное'] },
+  { id: 20, name: 'Масло сливочное Вологодское', brand: 'Вологжанка', category: 'Масло', desc: 'Традиционный вкус.', img: 'https://vmkmilk.ru/images/thumbs/Tovary/300x300/Maslo_Vologodskoe_180_resized.jpg', price: 172, specs: ['180 г', 'вологодское', 'сливочное'] }
 ];
 
 const state = {
-  selectedCategory: 'Все',
-  query: '',
-  sortBy: 'popular',
-  cart: new Map(),
-  history: []
-};
-
-const grid = document.getElementById('productGrid');
-const chips = document.getElementById('chips');
-const search = document.getElementById('searchInput');
-const sortSelect = document.getElementById('sortSelect');
-const resultCounter = document.getElementById('resultCounter');
-const cartItems = document.getElementById('cartItems');
-const cartCount = document.getElementById('cartCount');
-const cartTotalItems = document.getElementById('cartTotalItems');
-const cartTotalPrice = document.getElementById('cartTotalPrice');
-const cartEmpty = document.getElementById('cartEmpty');
-const historyList = document.getElementById('historyList');
-const checkoutBtn = document.getElementById('checkoutBtn');
-const checkoutDialog = document.getElementById('checkoutDialog');
-const closeDialog = document.getElementById('closeDialog');
-
-const normalize = (value) => value.toLowerCase().replace(/ё/g, 'е').trim();
-const formatPrice = (value) => `${new Intl.NumberFormat('ru-RU').format(value)} ₽`;
-
-const levenshtein = (a, b) => {
-  const dp = Array.from({ length: a.length + 1 }, (_, i) => [i]);
-  for (let j = 1; j <= b.length; j += 1) dp[0][j] = j;
-  for (let i = 1; i <= a.length; i += 1) {
-    for (let j = 1; j <= b.length; j += 1) {
-      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
-      dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
-    }
+  products,
+  cart: { items: loadCart() },
+  history: [],
+  ui: {
+    searchQuery: '',
+    selectedCategory: 'Все',
+    sortBy: 'popular',
+    cartOpen: false,
+    quickViewOpen: false,
+    quickViewProductId: null,
+    menuOpen: false,
+    filtersOpen: false
   }
-  return dp[a.length][b.length];
 };
 
-const typoMatch = (text, query) => {
-  if (!query) return true;
-  if (text.includes(query)) return true;
-  return query.length > 4 && text.split(/\s+/).some((word) => levenshtein(word, query) <= 1);
+const els = {
+  smartHeader: document.getElementById('smartHeader'),
+  searchInput: document.getElementById('searchInput'),
+  filtersBtn: document.getElementById('filtersBtn'),
+  menuBtn: document.getElementById('menuBtn'),
+  productGrid: document.getElementById('productGrid'),
+  resultCounter: document.getElementById('resultCounter'),
+  cartFab: document.getElementById('cartFab'),
+  cartFabCount: document.getElementById('cartFabCount'),
+  cartFabSum: document.getElementById('cartFabSum'),
+  cartDialog: document.getElementById('cartDialog'),
+  cartItems: document.getElementById('cartItems'),
+  cartEmpty: document.getElementById('cartEmpty'),
+  cartTotalItems: document.getElementById('cartTotalItems'),
+  cartTotalPrice: document.getElementById('cartTotalPrice'),
+  checkoutBtn: document.getElementById('checkoutBtn'),
+  menuDialog: document.getElementById('menuDialog'),
+  menuCategories: document.getElementById('menuCategories'),
+  filtersDialog: document.getElementById('filtersDialog'),
+  quickViewDialog: document.getElementById('quickViewDialog'),
+  quickViewBody: document.getElementById('quickViewBody'),
+  historyList: document.getElementById('historyList'),
+  dateChips: document.getElementById('dateChips'),
+  checkoutDialog: document.getElementById('checkoutDialog'),
+  closeDialog: document.getElementById('closeDialog')
+};
+
+const overlayStack = [];
+const lastTrigger = {};
+const debounce = (fn, ms = 200) => {
+  let t;
+  return (...args) => {
+    clearTimeout(t);
+    t = setTimeout(() => fn(...args), ms);
+  };
 };
 
 const sorters = {
@@ -73,186 +82,376 @@ const sorters = {
   priceDesc: (items) => [...items].sort((a, b) => b.price - a.price)
 };
 
-function getFilteredProducts() {
-  const filtered = products.filter((item) => {
-    const categoryOk = state.selectedCategory === 'Все' || item.category === state.selectedCategory;
-    const text = normalize(`${item.name} ${item.desc} ${item.brand} ${item.category}`);
-    const queryOk = typoMatch(text, state.query);
-    return categoryOk && queryOk;
-  });
-  return sorters[state.sortBy](filtered);
-}
-
-function renderProducts() {
-  const items = getFilteredProducts();
-  resultCounter.textContent = `Найдено товаров: ${items.length}`;
-
-  if (!items.length) {
-    grid.innerHTML = '<article class="panel-block"><h3>Ничего не найдено</h3><p class="hint">Попробуйте изменить запрос или категорию.</p></article>';
-    return;
+function loadCart() {
+  try {
+    const raw = localStorage.getItem('vmkmilk-cart-v2');
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return typeof parsed === 'object' && parsed ? parsed : {};
+  } catch {
+    return {};
   }
-
-  grid.innerHTML = items
-    .map(
-      (item) => `
-      <article class="product-card" style="animation-delay:${(item.id % 8) * 0.03}s">
-        <img loading="lazy" src="${item.img}" alt="${item.name}" />
-        <h3>${item.name}</h3>
-        <p>${item.desc}</p>
-        <div class="badges">
-          <span class="badge">${item.brand}</span>
-          <span class="badge">${item.category}</span>
-        </div>
-        <div class="price-row">
-          <span class="price">${formatPrice(item.price)}</span>
-          <button type="button" data-add="${item.id}">В корзину</button>
-        </div>
-      </article>`
-    )
-    .join('');
 }
 
-function renderChips() {
-  const categories = ['Все', ...new Set(products.map((item) => item.category))];
-  chips.innerHTML = categories
-    .map(
-      (category) =>
-        `<button type="button" class="chip ${category === state.selectedCategory ? 'active' : ''}" data-category="${category}">${category}</button>`
-    )
-    .join('');
+function saveCart() {
+  localStorage.setItem('vmkmilk-cart-v2', JSON.stringify(state.cart.items));
+}
+
+function normalize(value) {
+  return value.toLowerCase().trim();
+}
+
+function formatPrice(price) {
+  return `${new Intl.NumberFormat('ru-RU').format(price)} ₽`;
+}
+
+function getQty(productId) {
+  return state.cart.items[productId] ?? 0;
 }
 
 function cartTotals() {
-  let totalItems = 0;
-  let totalPrice = 0;
-  state.cart.forEach((qty, id) => {
-    const product = products.find((item) => item.id === id);
-    if (!product) return;
-    totalItems += qty;
-    totalPrice += product.price * qty;
+  let totalQty = 0;
+  let totalSum = 0;
+  for (const [id, qty] of Object.entries(state.cart.items)) {
+    const product = state.products.find((item) => item.id === Number(id));
+    if (!product) continue;
+    totalQty += qty;
+    totalSum += qty * product.price;
+  }
+  return { totalQty, totalSum };
+}
+
+function getVisibleProducts() {
+  const q = normalize(state.ui.searchQuery);
+  const filtered = state.products.filter((item) => {
+    const categoryOk = state.ui.selectedCategory === 'Все' || item.category === state.ui.selectedCategory;
+    const queryText = normalize(`${item.name} ${item.brand} ${item.category} ${item.desc}`);
+    return categoryOk && (!q || queryText.includes(q));
   });
-  return { totalItems, totalPrice };
+  return sorters[state.ui.sortBy](filtered);
+}
+
+function stepperMarkup(id, qty) {
+  return `<div class="stepper" data-stepper="${id}">
+      <button type="button" data-dec="${id}" aria-label="Уменьшить количество">−</button>
+      <span>${qty}</span>
+      <button type="button" data-inc="${id}" aria-label="Увеличить количество">+</button>
+    </div>`;
+}
+
+function renderProducts() {
+  const items = getVisibleProducts();
+  els.resultCounter.textContent = items.length
+    ? `Найдено товаров: ${items.length}`
+    : 'Ничего не нашли. Попробуйте другое слово';
+
+  if (!items.length) {
+    els.productGrid.innerHTML = '<article class="product-card"><h3>Пусто</h3><p>Попробуйте изменить запрос или фильтры.</p></article>';
+    return;
+  }
+
+  els.productGrid.innerHTML = items.map((item) => {
+    const qty = getQty(item.id);
+    return `<article class="product-card" tabindex="0" role="button" data-open-quick="${item.id}" aria-label="Открыть детали ${item.name}">
+      <img loading="lazy" src="${item.img}" alt="${item.name}" />
+      <h3>${item.name}</h3>
+      <p>${item.desc}</p>
+      <div class="meta-row">
+        <span class="price">${formatPrice(item.price)}</span>
+        ${qty > 0 ? stepperMarkup(item.id, qty) : `<button type="button" class="add-btn" data-add="${item.id}">Добавить</button>`}
+      </div>
+    </article>`;
+  }).join('');
+}
+
+function renderMenuCategories() {
+  const categories = ['Все', ...new Set(state.products.map((item) => item.category))];
+  els.menuCategories.innerHTML = categories.map((category) => `
+    <button type="button" data-category="${category}" class="${state.ui.selectedCategory === category ? 'active' : ''}">${category}</button>
+  `).join('');
+}
+
+function renderFiltersRadios() {
+  const active = state.ui.sortBy;
+  els.filtersDialog.querySelectorAll('input[name="sort"]').forEach((radio) => {
+    radio.checked = radio.value === active;
+  });
 }
 
 function renderCart() {
-  const entries = [...state.cart.entries()];
-  const { totalItems, totalPrice } = cartTotals();
+  const entries = Object.entries(state.cart.items).filter(([, qty]) => qty > 0);
+  const { totalQty, totalSum } = cartTotals();
 
-  cartCount.textContent = String(totalItems);
-  cartTotalItems.textContent = String(totalItems);
-  cartTotalPrice.textContent = formatPrice(totalPrice);
-  checkoutBtn.disabled = totalItems === 0;
-  cartEmpty.style.display = entries.length ? 'none' : 'block';
+  els.cartFabCount.textContent = String(totalQty);
+  els.cartFabSum.textContent = formatPrice(totalSum);
+  els.cartTotalItems.textContent = String(totalQty);
+  els.cartTotalPrice.textContent = formatPrice(totalSum);
+  els.cartEmpty.style.display = entries.length ? 'none' : 'block';
+  els.checkoutBtn.disabled = totalQty === 0;
 
-  cartItems.innerHTML = entries
-    .map(([id, qty]) => {
-      const item = products.find((product) => product.id === id);
-      if (!item) return '';
-      return `
-      <li class="cart-item">
-        <div class="cart-item-title">${item.name}</div>
-        <div class="cart-item-controls">
-          <div class="qty-controls">
-            <button type="button" class="qty-btn" data-dec="${id}">−</button>
-            <span class="qty-value">${qty}</span>
-            <button type="button" class="qty-btn" data-inc="${id}">+</button>
-          </div>
-          <strong>${formatPrice(item.price * qty)}</strong>
-        </div>
-      </li>`;
-    })
-    .join('');
+  els.cartItems.innerHTML = entries.map(([id, qty]) => {
+    const item = state.products.find((product) => product.id === Number(id));
+    if (!item) return '';
+    return `<li class="cart-item">
+      <strong>${item.name}</strong>
+      <div class="cart-line">
+        ${stepperMarkup(item.id, qty)}
+        <span>${formatPrice(item.price * qty)}</span>
+      </div>
+      <button class="remove-btn" type="button" data-remove="${item.id}" aria-label="Удалить ${item.name}">Удалить</button>
+    </li>`;
+  }).join('');
 }
 
 function renderHistory() {
   if (!state.history.length) {
-    historyList.innerHTML = '<li class="empty-history">Пока нет демо-заказов</li>';
+    els.historyList.innerHTML = '<li class="empty-history">Пока нет демо-заказов</li>';
     return;
   }
-
-  historyList.innerHTML = state.history
-    .map(
-      (order) =>
-        `<li class="cart-item"><div class="cart-item-title">Заказ #${order.id}</div><div class="hint">${order.items} тов. • ${formatPrice(order.total)}</div></li>`
-    )
-    .join('');
+  els.historyList.innerHTML = state.history.map((order) => `<li class="cart-item">
+    <strong>Заказ #${order.id}</strong>
+    <span>${order.items} тов. • ${formatPrice(order.total)}</span>
+  </li>`).join('');
 }
 
-function bumpCartCounter() {
-  cartCount.classList.remove('bump');
-  void cartCount.offsetWidth;
-  cartCount.classList.add('bump');
+function renderQuickView() {
+  const id = state.ui.quickViewProductId;
+  const product = state.products.find((item) => item.id === id);
+  if (!product) return;
+  const qty = getQty(id);
+
+  els.quickViewBody.innerHTML = `
+    <div class="sheet__header">
+      <h2 id="quickTitle">${product.name}</h2>
+      <button type="button" class="icon-close" data-close="quick">✕</button>
+    </div>
+    <img class="quick-view__img" src="${product.img}" alt="${product.name}" />
+    <strong class="price">${formatPrice(product.price)}</strong>
+    <div class="quick-view__meta">${product.specs.map((spec) => `<span>${spec}</span>`).join('')}</div>
+    <p>${product.desc}</p>
+    <details><summary>Подробнее</summary><p>${product.brand} • Категория: ${product.category}. Демо-описание товара для быстрого просмотра.</p></details>
+    <div class="cart-line">
+      ${qty > 0 ? stepperMarkup(product.id, qty) : `<button type="button" class="add-btn" data-add="${product.id}">Добавить</button>`}
+      <button type="button" class="secondary" data-open-cart>Открыть корзину</button>
+    </div>
+  `;
 }
 
-function addToCart(productId) {
-  state.cart.set(productId, (state.cart.get(productId) ?? 0) + 1);
+function bumpFab() {
+  els.cartFab.classList.remove('bump');
+  void els.cartFab.offsetWidth;
+  els.cartFab.classList.add('bump');
+}
+
+function setQty(productId, qty) {
+  if (qty <= 0) delete state.cart.items[productId];
+  else state.cart.items[productId] = qty;
+  saveCart();
+  renderProducts();
   renderCart();
-  bumpCartCounter();
+  if (state.ui.quickViewOpen) renderQuickView();
+  bumpFab();
 }
 
 function changeQty(productId, delta) {
-  const next = (state.cart.get(productId) ?? 0) + delta;
-  if (next <= 0) state.cart.delete(productId);
-  else state.cart.set(productId, next);
-  renderCart();
+  setQty(productId, getQty(productId) + delta);
+}
+
+function openOverlay(id, triggerEl) {
+  if (id === 'cart' && state.ui.cartOpen) return;
+  if (id === 'quick' && state.ui.quickViewOpen) return;
+  if (id === 'menu' && state.ui.menuOpen) return;
+  if (id === 'filters' && state.ui.filtersOpen) return;
+
+  if (triggerEl) lastTrigger[id] = triggerEl;
+
+  if (id === 'cart') {
+    state.ui.cartOpen = true;
+    els.cartDialog.showModal();
+  }
+  if (id === 'quick') {
+    state.ui.quickViewOpen = true;
+    renderQuickView();
+    els.quickViewDialog.showModal();
+  }
+  if (id === 'menu') {
+    state.ui.menuOpen = true;
+    els.menuDialog.showModal();
+  }
+  if (id === 'filters') {
+    state.ui.filtersOpen = true;
+    renderFiltersRadios();
+    els.filtersDialog.showModal();
+  }
+
+  history.pushState({ overlay: id }, '');
+  overlayStack.push(id);
+}
+
+function closeOverlay(id, fromPop = false) {
+  if (id === 'cart' && state.ui.cartOpen) {
+    state.ui.cartOpen = false;
+    els.cartDialog.close();
+  }
+  if (id === 'quick' && state.ui.quickViewOpen) {
+    state.ui.quickViewOpen = false;
+    state.ui.quickViewProductId = null;
+    els.quickViewDialog.close();
+  }
+  if (id === 'menu' && state.ui.menuOpen) {
+    state.ui.menuOpen = false;
+    els.menuDialog.close();
+  }
+  if (id === 'filters' && state.ui.filtersOpen) {
+    state.ui.filtersOpen = false;
+    els.filtersDialog.close();
+  }
+
+  if (!fromPop) {
+    const last = overlayStack[overlayStack.length - 1];
+    if (last === id) history.back();
+  } else {
+    if (lastTrigger[id]) lastTrigger[id].focus();
+  }
 }
 
 function seedDates() {
-  const chipsRoot = document.getElementById('dateChips');
   const dates = ['Пн, 11 мар', 'Ср, 13 мар', 'Сб, 16 мар', 'Пн, 18 мар', 'Ср, 20 мар', 'Сб, 23 мар'];
-  chipsRoot.innerHTML = dates.map((date) => `<span>${date}</span>`).join('');
+  els.dateChips.innerHTML = dates.map((date) => `<span>${date}</span>`).join('');
 }
 
-search.addEventListener('input', () => {
-  state.query = normalize(search.value);
+function handleSmartHeader() {
+  let lastY = window.scrollY;
+  window.addEventListener('scroll', () => {
+    const current = window.scrollY;
+    if (current <= 0) {
+      els.smartHeader.classList.remove('header--hidden');
+      lastY = current;
+      return;
+    }
+
+    const scrollingDown = current > lastY;
+    if (scrollingDown && current > 64) els.smartHeader.classList.add('header--hidden');
+    if (!scrollingDown && Math.abs(current - lastY) > 10) els.smartHeader.classList.remove('header--hidden');
+    lastY = current;
+  }, { passive: true });
+}
+
+els.searchInput.addEventListener('input', debounce(() => {
+  state.ui.searchQuery = els.searchInput.value;
+  renderProducts();
+}, 180));
+
+els.menuBtn.addEventListener('click', (event) => openOverlay('menu', event.currentTarget));
+els.filtersBtn.addEventListener('click', (event) => openOverlay('filters', event.currentTarget));
+els.cartFab.addEventListener('click', (event) => openOverlay('cart', event.currentTarget));
+
+els.menuCategories.addEventListener('click', (event) => {
+  const btn = event.target.closest('[data-category]');
+  if (!btn) return;
+  state.ui.selectedCategory = btn.dataset.category;
+  renderMenuCategories();
   renderProducts();
 });
 
-sortSelect.addEventListener('change', () => {
-  state.sortBy = sortSelect.value;
+els.filtersDialog.addEventListener('change', (event) => {
+  const radio = event.target.closest('input[name="sort"]');
+  if (!radio) return;
+  state.ui.sortBy = radio.value;
   renderProducts();
 });
 
-chips.addEventListener('click', (event) => {
-  const chip = event.target.closest('[data-category]');
-  if (!chip) return;
-  state.selectedCategory = chip.dataset.category;
-  renderChips();
-  renderProducts();
-});
-
-grid.addEventListener('click', (event) => {
+els.productGrid.addEventListener('click', (event) => {
   const addBtn = event.target.closest('[data-add]');
-  if (!addBtn) return;
-  addToCart(Number(addBtn.dataset.add));
+  if (addBtn) {
+    event.stopPropagation();
+    changeQty(Number(addBtn.dataset.add), 1);
+    return;
+  }
+
+  const stepperBtn = event.target.closest('[data-inc], [data-dec]');
+  if (stepperBtn) {
+    event.stopPropagation();
+    if (stepperBtn.dataset.inc) changeQty(Number(stepperBtn.dataset.inc), 1);
+    if (stepperBtn.dataset.dec) changeQty(Number(stepperBtn.dataset.dec), -1);
+    return;
+  }
+
+  const card = event.target.closest('[data-open-quick]');
+  if (!card) return;
+  state.ui.quickViewProductId = Number(card.dataset.openQuick);
+  openOverlay('quick', card);
 });
 
-cartItems.addEventListener('click', (event) => {
-  const inc = event.target.closest('[data-inc]');
-  const dec = event.target.closest('[data-dec]');
-  if (inc) changeQty(Number(inc.dataset.inc), 1);
-  if (dec) changeQty(Number(dec.dataset.dec), -1);
+els.productGrid.addEventListener('keydown', (event) => {
+  const card = event.target.closest('[data-open-quick]');
+  if (!card) return;
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault();
+    state.ui.quickViewProductId = Number(card.dataset.openQuick);
+    openOverlay('quick', card);
+  }
 });
 
-checkoutBtn.addEventListener('click', () => {
-  const { totalItems, totalPrice } = cartTotals();
-  if (!totalItems) return;
-
-  state.history.unshift({
-    id: 1000 + state.history.length + 1,
-    items: totalItems,
-    total: totalPrice
+function handleStepperActions(root) {
+  root.addEventListener('click', (event) => {
+    const inc = event.target.closest('[data-inc]');
+    const dec = event.target.closest('[data-dec]');
+    const remove = event.target.closest('[data-remove]');
+    const openCartBtn = event.target.closest('[data-open-cart]');
+    if (inc) changeQty(Number(inc.dataset.inc), 1);
+    if (dec) changeQty(Number(dec.dataset.dec), -1);
+    if (remove) setQty(Number(remove.dataset.remove), 0);
+    if (openCartBtn) openOverlay('cart', els.cartFab);
   });
-  state.cart.clear();
-  renderCart();
-  renderHistory();
-  checkoutDialog.showModal();
+}
+
+handleStepperActions(els.cartDialog);
+handleStepperActions(els.quickViewDialog);
+
+document.addEventListener('click', (event) => {
+  const closeBtn = event.target.closest('[data-close]');
+  if (!closeBtn) return;
+  const map = { cart: 'cart', quick: 'quick', menu: 'menu', filters: 'filters' };
+  closeOverlay(map[closeBtn.dataset.close]);
 });
 
-closeDialog.addEventListener('click', () => checkoutDialog.close());
+[els.cartDialog, els.quickViewDialog, els.menuDialog, els.filtersDialog].forEach((dialog) => {
+  dialog.addEventListener('cancel', (event) => {
+    event.preventDefault();
+    const id =
+      dialog === els.cartDialog ? 'cart' :
+      dialog === els.quickViewDialog ? 'quick' :
+      dialog === els.menuDialog ? 'menu' : 'filters';
+    closeOverlay(id);
+  });
+});
 
-renderChips();
+window.addEventListener('popstate', () => {
+  const id = overlayStack.pop();
+  if (!id) return;
+  closeOverlay(id, true);
+});
+
+els.checkoutBtn.addEventListener('click', () => {
+  const { totalQty, totalSum } = cartTotals();
+  if (!totalQty) return;
+
+  state.history.unshift({ id: 1000 + state.history.length + 1, items: totalQty, total: totalSum });
+  state.cart.items = {};
+  saveCart();
+  renderCart();
+  renderProducts();
+  renderHistory();
+  els.checkoutDialog.showModal();
+});
+
+els.closeDialog.addEventListener('click', () => els.checkoutDialog.close());
+
+seedDates();
+renderMenuCategories();
+renderFiltersRadios();
 renderProducts();
 renderCart();
 renderHistory();
-seedDates();
+handleSmartHeader();
