@@ -82,6 +82,13 @@ button, input { font: inherit; }
   background: transparent;
 }
 
+.catalog-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
 .catalog-head h1 {
   margin: 0;
   font-size: clamp(1.3rem, 4vw, 1.8rem);
@@ -301,14 +308,57 @@ button, input { font: inherit; }
 }
 
 .cart-field { display: grid; gap: 0.35rem; margin-top: 0.5rem; }
-.address-select,
-#addressInput {
+.address-row { display: grid; grid-template-columns: 1fr auto; gap: 0.45rem; align-items: start; }
+
+.address-select { position: relative; }
+.address-select__trigger {
+  width: 100%;
+  min-height: 42px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  padding: 0 0.7rem;
+  text-align: left;
+}
+.address-select__list {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  top: calc(100% + 0.2rem);
+  margin: 0;
+  list-style: none;
+  padding: 0.35rem;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  display: none;
+}
+.address-select[data-open="true"] .address-select__list { display: block; }
+
+.address-option {
+  width: 100%;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  text-align: left;
+  min-height: 36px;
+  padding: 0.3rem 0.45rem;
+}
+.address-option.active { background: #eaf2ff; color: var(--primary); font-weight: 600; }
+.address-option--add { border-top: 1px solid var(--line); margin-top: 0.25rem; padding-top: 0.55rem; }
+
+#addressInput,
+#addressNameInput,
+#addressExtraInput {
   width: 100%;
   min-height: 42px;
   border-radius: 10px;
   border: 1px solid var(--line);
   background: var(--surface);
   padding: 0 0.6rem;
+  margin-bottom: 0.45rem;
 }
 
 .delivery-dates h3 { margin: 0.25rem 0 0; font-size: 1rem; }
@@ -316,7 +366,6 @@ button, input { font: inherit; }
 
 .grid-view-toggle {
   display: inline-flex;
-  margin-top: 0.75rem;
   border: 1px solid var(--line);
   border-radius: 12px;
   overflow: hidden;
@@ -335,6 +384,7 @@ button, input { font: inherit; }
 .address-form-field { display: block; margin-bottom: 0.35rem; }
 .address-actions { display: flex; gap: 0.5rem; margin-top: 0.7rem; }
 .address-actions button { flex: 1; }
+.icon-btn--small { min-width: 42px; padding: 0.4rem; }
 
 .filter-group { border: 0; padding: 0; margin: 0; display: grid; gap: 0.5rem; }
 .filter-group label { display: flex; gap: 0.5rem; align-items: center; }
@@ -364,6 +414,8 @@ button, input { font: inherit; }
     border-radius: 18px 18px 0 0;
     border-left: 0;
   }
+
+  .catalog-head { align-items: center; }
 }
 
 @media (max-width: 480px) {

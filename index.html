@@ -32,8 +32,14 @@
 
     <main class="container">
       <section class="catalog-head">
-        <h1>Каталог VMKMilk</h1>
-        <p id="resultCounter" class="result-counter"></p>
+        <div>
+          <h1>Каталог VMKMilk</h1>
+          <p id="resultCounter" class="result-counter"></p>
+        </div>
+        <div id="gridToggle" class="grid-view-toggle" role="group" aria-label="Вид карточек">
+          <button type="button" class="active" data-grid="2">2 в ряд</button>
+          <button type="button" data-grid="1">1 в ряд</button>
+        </div>
       </section>
 
       <section id="productGrid" class="product-grid" aria-live="polite"></section>
@@ -101,8 +107,14 @@
         </div>
 
         <div class="cart-field">
-          <label for="addressSelect">Адрес доставки</label>
-          <select id="addressSelect" class="address-select"></select>
+          <label>Адрес доставки</label>
+          <div class="address-row">
+            <div id="addressSelect" class="address-select" role="combobox" aria-expanded="false" aria-haspopup="listbox" tabindex="0">
+              <button id="addressSelectTrigger" class="address-select__trigger" type="button" aria-label="Выбрать адрес"></button>
+              <ul id="addressSelectList" class="address-select__list" role="listbox"></ul>
+            </div>
+            <button id="editAddressBtn" type="button" class="icon-btn icon-btn--small" aria-label="Редактировать адрес">✎</button>
+          </div>
         </div>
 
         <button id="checkoutBtn" type="button">Оформить демо-заказ</button>
@@ -111,11 +123,6 @@
           <h3>Ближайшие даты доставки</h3>
           <p class="inline-note">Выберите одну дату — это обязательный шаг.</p>
           <div id="dateChips" class="date-chips"></div>
-        </div>
-
-        <div class="grid-view-toggle" role="group" aria-label="Вид карточек">
-          <button type="button" class="active" data-grid="2">2 в ряд</button>
-          <button type="button" data-grid="1">1 в ряд</button>
         </div>
 
         <details class="demo-accordion">
@@ -142,9 +149,13 @@
 
     <dialog id="addressDialog" class="sheet sheet--small" aria-labelledby="addressTitle">
       <div class="sheet__content">
-        <h2 id="addressTitle">Добавить адрес</h2>
-        <label class="address-form-field" for="addressInput">Введите адрес доставки</label>
-        <input id="addressInput" type="text" placeholder="Город, улица, дом, квартира" />
+        <h2 id="addressTitle">Адрес доставки</h2>
+        <label class="address-form-field" for="addressNameInput">Название</label>
+        <input id="addressNameInput" type="text" placeholder="Например: Дом" />
+        <label class="address-form-field" for="addressInput">Адрес</label>
+        <input id="addressInput" type="text" placeholder="Город, улица, дом" />
+        <label class="address-form-field" for="addressExtraInput">Доп. информация</label>
+        <input id="addressExtraInput" type="text" placeholder="Подъезд, этаж, код домофона" />
         <div class="address-actions">
           <button id="saveAddressBtn" type="button">Сохранить адрес</button>
           <button id="cancelAddressBtn" type="button" class="secondary">Отмена</button>

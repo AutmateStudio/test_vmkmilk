@@ -27,9 +27,10 @@ const state = {
   delivery: {
     selectedDate: '',
     addresses: loadAddresses(),
-    selectedAddress: ''
+    selectedAddressId: '',
+    editAddressId: null
   },
-  history: [],
+  history: loadHistory(),
   ui: {
     searchQuery: '',
     selectedCategories: [...new Set(products.map((item) => item.category))],
@@ -67,11 +68,16 @@ const els = {
   historyList: document.getElementById('historyList'),
   dateChips: document.getElementById('dateChips'),
   addressSelect: document.getElementById('addressSelect'),
+  addressSelectTrigger: document.getElementById('addressSelectTrigger'),
+  addressSelectList: document.getElementById('addressSelectList'),
+  editAddressBtn: document.getElementById('editAddressBtn'),
   addressDialog: document.getElementById('addressDialog'),
+  addressNameInput: document.getElementById('addressNameInput'),
   addressInput: document.getElementById('addressInput'),
+  addressExtraInput: document.getElementById('addressExtraInput'),
   saveAddressBtn: document.getElementById('saveAddressBtn'),
   cancelAddressBtn: document.getElementById('cancelAddressBtn'),
-  gridToggle: document.querySelector('.grid-view-toggle'),
+  gridToggle: document.getElementById('gridToggle'),
   checkoutDialog: document.getElementById('checkoutDialog'),
   closeDialog: document.getElementById('closeDialog')
 };
@@ -112,16 +118,38 @@ function saveCart() {
 function loadAddresses() {
   try {
     const raw = localStorage.getItem('vmkmilk-addresses-v1');
-    if (!raw) return ['Вологда, ул. Ленина, 10'];
+    if (!raw) return [{ id: crypto.randomUUID(), name: 'Дом', address: 'Вологда, ул. Ленина, 10', extra: '' }];
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) && parsed.length ? parsed : ['Вологда, ул. Ленина, 10'];
+    return Array.isArray(parsed) && parsed.length ? parsed : [{ id: crypto.randomUUID(), name: 'Дом', address: 'Вологда, ул. Ленина, 10', extra: '' }];
   } catch {
-    return ['Вологда, ул. Ленина, 10'];
+    return [{ id: crypto.randomUUID(), name: 'Дом', address: 'Вологда, ул. Ленина, 10', extra: '' }];
   }
 }
 
 function saveAddresses() {
   localStorage.setItem('vmkmilk-addresses-v1', JSON.stringify(state.delivery.addresses));
+}
+
+function saveHistory() {
+  document.cookie = `vmkmilk-history=${encodeURIComponent(JSON.stringify(state.history))}; path=/; max-age=${60 * 60 * 24 * 365}`;
+}
+
+function loadHistory() {
+  try {
+    const value = document.cookie
+      .split('; ')
+      .find((item) => item.startsWith('vmkmilk-history='))
+      ?.split('=')[1];
+    if (!value) return [];
+    const parsed = JSON.parse(decodeURIComponent(value));
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function getSelectedAddress() {
+  return state.delivery.addresses.find((item) => item.id === state.delivery.selectedAddressId) ?? null;
 }
 
 function normalize(value) {
@@ -207,9 +235,19 @@ function renderCategoryFilters() {
 }
 
 function renderAddresses() {
-  const selected = state.delivery.selectedAddress || state.delivery.addresses[0];
-  state.delivery.selectedAddress = selected;
-  els.addressSelect.innerHTML = `${state.delivery.addresses.map((address) => `<option value="${address}" ${address === selected ? 'selected' : ''}>${address}</option>`).join('')}<option value="__add_new__">+ Добавить адрес</option>`;
+  if (!state.delivery.selectedAddressId) state.delivery.selectedAddressId = state.delivery.addresses[0]?.id || '';
+  const selected = getSelectedAddress();
+  els.addressSelectTrigger.textContent = selected ? selected.name : 'Выберите адрес';
+  els.editAddressBtn.disabled = !selected;
+  els.addressSelectList.innerHTML = `${state.delivery.addresses.map((address) => `<li><button type="button" role="option" data-address-id="${address.id}" class="address-option ${address.id === state.delivery.selectedAddressId ? 'active' : ''}">${address.name}</button></li>`).join('')}<li><button type="button" class="address-option address-option--add" data-add-address>+ Добавить адрес</button></li>`;
+}
+
+function openAddressDialog(address = null) {
+  state.delivery.editAddressId = address?.id ?? null;
+  els.addressNameInput.value = address?.name ?? '';
+  els.addressInput.value = address?.address ?? '';
+  els.addressExtraInput.value = address?.extra ?? '';
+  els.addressDialog.showModal();
 }
 
 function renderDateSelection() {
@@ -227,7 +265,7 @@ function renderCart() {
   els.cartTotalItems.textContent = String(totalQty);
   els.cartTotalPrice.textContent = formatPrice(totalSum);
   els.cartEmpty.style.display = entries.length ? 'none' : 'block';
-  els.checkoutBtn.disabled = totalQty === 0;
+  els.checkoutBtn.disabled = totalQty === 0 || !state.delivery.selectedDate || !state.delivery.selectedAddressId;
 
   els.cartItems.innerHTML = entries.map(([id, qty]) => {
     const item = state.products.find((product) => product.id === Number(id));
@@ -251,6 +289,7 @@ function renderHistory() {
   els.historyList.innerHTML = state.history.map((order) => `<li class="cart-item">
     <strong>Заказ #${order.id}</strong>
     <span>${order.items} тов. • ${formatPrice(order.total)}</span>
+    <button type="button" class="secondary" data-repeat-order="${order.id}">Повторить покупку</button>
   </li>`).join('');
 }
 
@@ -427,26 +466,57 @@ els.dateChips.addEventListener('click', (event) => {
   renderDateSelection();
 });
 
-els.addressSelect.addEventListener('change', () => {
-  if (els.addressSelect.value === '__add_new__') {
-    els.addressInput.value = '';
-    els.addressDialog.showModal();
-    return;
+els.addressSelectTrigger.addEventListener('click', () => {
+  const expanded = els.addressSelect.dataset.open === 'true';
+  els.addressSelect.dataset.open = expanded ? 'false' : 'true';
+  els.addressSelect.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+});
+
+els.addressSelectList.addEventListener('click', (event) => {
+  const selectBtn = event.target.closest('[data-address-id]');
+  const addBtn = event.target.closest('[data-add-address]');
+  if (selectBtn) {
+    state.delivery.selectedAddressId = selectBtn.dataset.addressId;
+    renderAddresses();
   }
-  state.delivery.selectedAddress = els.addressSelect.value;
+  if (addBtn) openAddressDialog();
+  els.addressSelect.dataset.open = 'false';
+  els.addressSelect.setAttribute('aria-expanded', 'false');
+});
+
+els.editAddressBtn.addEventListener('click', () => {
+  const address = getSelectedAddress();
+  if (!address) return;
+  openAddressDialog(address);
 });
 
 els.saveAddressBtn.addEventListener('click', () => {
-  const value = els.addressInput.value.trim();
-  if (!value) return;
-  if (!state.delivery.addresses.includes(value)) state.delivery.addresses.push(value);
-  state.delivery.selectedAddress = value;
+  const name = els.addressNameInput.value.trim();
+  const address = els.addressInput.value.trim();
+  const extra = els.addressExtraInput.value.trim();
+  if (!name || !address) return;
+
+  if (state.delivery.editAddressId) {
+    state.delivery.addresses = state.delivery.addresses.map((item) => (item.id === state.delivery.editAddressId ? {
+      ...item,
+      name,
+      address,
+      extra
+    } : item));
+  } else {
+    const newAddress = { id: crypto.randomUUID(), name, address, extra };
+    state.delivery.addresses.push(newAddress);
+    state.delivery.selectedAddressId = newAddress.id;
+  }
+
+  state.delivery.editAddressId = null;
   saveAddresses();
   renderAddresses();
   els.addressDialog.close();
 });
 
 els.cancelAddressBtn.addEventListener('click', () => {
+  state.delivery.editAddressId = null;
   els.addressDialog.close();
   renderAddresses();
 });
@@ -489,10 +559,19 @@ function handleStepperActions(root) {
     const dec = event.target.closest('[data-dec]');
     const remove = event.target.closest('[data-remove]');
     const openCartBtn = event.target.closest('[data-open-cart]');
+    const repeatOrderBtn = event.target.closest('[data-repeat-order]');
     if (inc) changeQty(Number(inc.dataset.inc), 1);
     if (dec) changeQty(Number(dec.dataset.dec), -1);
     if (remove) setQty(Number(remove.dataset.remove), 0);
     if (openCartBtn) openOverlay('cart', els.cartFab);
+    if (repeatOrderBtn) {
+      const order = state.history.find((item) => item.id === Number(repeatOrderBtn.dataset.repeatOrder));
+      if (!order) return;
+      state.cart.items = { ...order.cartItems };
+      saveCart();
+      renderCart();
+      renderProducts();
+    }
   });
 }
 
@@ -500,6 +579,12 @@ handleStepperActions(els.cartDialog);
 handleStepperActions(els.quickViewDialog);
 
 document.addEventListener('click', (event) => {
+  const insideAddress = event.target.closest('#addressSelect');
+  if (!insideAddress && els.addressSelect.dataset.open === 'true') {
+    els.addressSelect.dataset.open = 'false';
+    els.addressSelect.setAttribute('aria-expanded', 'false');
+  }
+
   const closeBtn = event.target.closest('[data-close]');
   if (!closeBtn) return;
   const map = { cart: 'cart', quick: 'quick', menu: 'menu', filters: 'filters' };
@@ -510,6 +595,7 @@ document.addEventListener('click', (event) => {
   dialog.addEventListener('cancel', (event) => {
     event.preventDefault();
     if (dialog === els.addressDialog) {
+      state.delivery.editAddressId = null;
       dialog.close();
       renderAddresses();
       return;
@@ -530,9 +616,15 @@ window.addEventListener('popstate', () => {
 
 els.checkoutBtn.addEventListener('click', () => {
   const { totalQty, totalSum } = cartTotals();
-  if (!totalQty || !state.delivery.selectedDate || !state.delivery.selectedAddress) return;
+  if (!totalQty || !state.delivery.selectedDate || !state.delivery.selectedAddressId) return;
 
-  state.history.unshift({ id: 1000 + state.history.length + 1, items: totalQty, total: totalSum });
+  state.history.unshift({
+    id: 1000 + state.history.length + 1,
+    items: totalQty,
+    total: totalSum,
+    cartItems: { ...state.cart.items }
+  });
+  saveHistory();
   state.cart.items = {};
   saveCart();
   renderCart();
